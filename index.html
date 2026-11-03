@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem Vindo!</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="./css/index.css">
+
+</head>
+<body>
+    <main class="container">
+        <h1>Cadastro de Produtos</h1>
+        <form action="#" method="post" id="cadastroProduto">
+
+            <div class="row">
+                
+                <div class="form-field col-6">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" name="nome" id="nome" class="form-control" required>
+                </div>
+
+                <div class="form-field col-6">
+                    <label for="valor" class="form-label">Valor</label>
+                    <input type="number" class="form-control" required name="valor" id="valor" placeholder="0.00" >
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="btn-group botoes col-12">
+                    <button button type="submit" class="btn-solid theme-primary" id="botaoSubmit">Adicionar</button>
+                </div>
+            </div>
+        </form>
+        <br>
+    
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Editar</th>
+                </tr>   
+            </thead>
+            <tbody id="conteudo-tabela">
+                
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>  
+                    <td></td>  
+                    <td>Valor total: <span></span></td>     
+                </tr>
+            </tfoot>
+            
+        </table>
+        <br>
+        <div class="row">
+            <div class="text-end">
+                Valor total: <span></span>
+            </div>
+        </div>
+    </main>
+    <script>
+    let estoque = []
+
+    let form = document.querySelector('#cadastroProduto')
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        //cancela a acao do evento, quer é submit
+        console.log(event);
+
+        //chama a outra funcao
+        capturaFormulario(event);
+    })
+
+    let botaoSubmit = document.querySelector('#botaoSubmit')
+    botaoSubmit.addEventListener('mouseover', function(){
+        console.log('oi')
+    })
+        function capturaFormulario(event) {
+            // criar um vetor
+            
+
+            let nome = document.querySelector('#nome')
+            let valor = document.querySelector('#valor')
+            
+
+            let produto = {
+                nome: nome.value,
+                valor: valor.value
+            }
+
+            estoque.push(produto)
+            console.log(estoque)
+            
+            atualizaTabela(estoque)
+            
+            console.log(produto)
+        }
+        
+        function atualizaTabela(estoque){
+            let tbody = document.querySelector('#conteudo-tabela')
+            tbody.innerHTML = ''
+            
+            for (let index = 0; index < estoque.length; index++) {
+                let produto = estoque[index]
+                produto.id =  index
+
+                let tr = document.createElement('tr')
+                tr.setAttribute('produto','id', produto.id)
+                let tdId = document.createElement('td')
+                tdId.textContent = index + 1
+                let tdNome = document.createElement('td')
+                let tdValor = document.createElement('td')
+                let tdEditar = document.createElement('td')
+                let aRemover = document.createElement('a')
+                //Remover.setAttribute('href', "javascript:remover(produto.id)")
+                aRemover.setAttribute('href', `javascript:remover(${produto.id})`)
+
+
+
+                aRemover.textContent = 'Remover'
+                
+                tdNome.textContent = produto.nome
+                tdValor.textContent = produto.valor
+                
+                tdEditar.append(aRemover)
+
+                tr.append(tdId)
+                tr.append(tdNome)
+                tr.append(tdValor)
+                tr.append(tdEditar)
+                
+                tbody.append(tr)
+            }
+        }
+
+        function remover(id){
+            estoque.splice(id, 1)
+            atualizaTabela(estoque)
+        }
+    </script>
+    
+</body>
+</html>
