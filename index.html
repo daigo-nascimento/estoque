@@ -65,6 +65,8 @@
         </div>
     </main>
     <script>
+    let queroEditar
+    let idParaEditar = 0
     let estoque = []
 
     let form = document.querySelector('#cadastroProduto')
@@ -95,12 +97,14 @@
                 valor: valor.value
             }
 
-            estoque.push(produto)
-            console.log(estoque)
-            
+            if (queroEditar){
+                estoque[idParaEditar] = produto
+            } else {
+                estoque.push(produto)
+            }
+
+            queroEditar = false
             atualizaTabela(estoque)
-            
-            console.log(produto)
         }
         
         function atualizaTabela(estoque){
@@ -113,23 +117,36 @@
 
                 let tr = document.createElement('tr')
                 tr.setAttribute('produto','id', produto.id)
+
                 let tdId = document.createElement('td')
                 tdId.textContent = index + 1
+
                 let tdNome = document.createElement('td')
+                tdNome.textContent = produto.nome
+
                 let tdValor = document.createElement('td')
+                tdValor.textContent = produto.valor
+
                 let tdEditar = document.createElement('td')
+
+
                 let aRemover = document.createElement('a')
+                aRemover.textContent = 'Remover'
                 //Remover.setAttribute('href', "javascript:remover(produto.id)")
                 aRemover.setAttribute('href', `javascript:remover(${produto.id})`)
-
-
-
-                aRemover.textContent = 'Remover'
                 
-                tdNome.textContent = produto.nome
-                tdValor.textContent = produto.valor
+                let aEditar = document.createElement('a')
+                aEditar.textContent = 'Editar'
+                aEditar.setAttribute('href', `javascript:editar(${produto.id})`)
+
+
+
+
+
                 
-                tdEditar.append(aRemover)
+                
+                tdEditar.append(aRemover, ' ' ,aEditar)
+                
 
                 tr.append(tdId)
                 tr.append(tdNome)
@@ -142,6 +159,16 @@
 
         function remover(id){
             estoque.splice(id, 1)
+            atualizaTabela(estoque)
+        }
+
+        function editar(id){
+            alert('Digite a versão editadata na nos blocos de texto')
+
+           idParaEditar = id
+           queroEditar = true
+            
+
             atualizaTabela(estoque)
         }
     </script>
