@@ -1,0 +1,9 @@
+.botoes {
+    margin-top: 10px;
+}
+
+
+
+.remover, .editar{
+    cursor: pointer;
+}
