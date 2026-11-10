@@ -30,7 +30,11 @@
 
             <div class="row">
                 <div class="btn-group botoes col-12">
-                    <button button type="submit" class="btn-solid theme-primary" id="botaoSubmit">Adicionar</button>
+                    <button type="reset" class="btn-solid theme-secondary" id="botaoNovo">Novo</button>
+
+                    <button type="submit" class="btn-solid theme-primary visible" id="botaoAdicionar">Adicionar</button>
+
+                    <button type="button" class="btn-solid theme-primary invisible" id="botaoAlterar">Alterar</button>
                 </div>
             </div>
         </form>
@@ -66,12 +70,15 @@
         </div>
     </main>
     <script>
+    let idProduto
     let nomeInput = document.querySelector('#nome')
     let valorInput = document.querySelector('#valor')
-    
     let estoque = []
-
     let form = document.querySelector('#cadastroProduto')
+    let botaoAlterar = document.querySelector('#botaoAlterar')
+    let botaoAdicionar = document.querySelector('#botaoAdicionar')
+    let botaoNovo = document.querySelector('#botaoNovo')
+
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -81,6 +88,15 @@
         //chama a outra funcao
         capturaFormulario(event);
     })
+
+    
+    botaoNovo.addEventListener('click', reset)
+    botaoAlterar.addEventListener('click',()=> alterar(idProduto))
+
+    function reset(){
+    botaoAlterar.classList.replace('visible', 'invisible')
+    botaoAdicionar.classList.replace('invisible', 'visible')
+    }
 
     let botaoSubmit = document.querySelector('#botaoSubmit')
     botaoSubmit.addEventListener('mouseover', function(){
@@ -199,22 +215,31 @@
             atualizaTabela(estoque)
         }
 
-        function editar(id){
-            alert('Digite a versão editadata na nos blocos de texto')
-
-           idParaEditar = id
-           queroEditar = true
-            
-
-            atualizaTabela(estoque)
-        }
 
         function carregar(produto){
             nomeInput.value = produto.nome
             valorInput.value = produto.valor
+            idProduto = produto.id
+            //atlterar o botao de adicionar para invisible
             
+            botaoAlterar.classList.replace('invisible', 'visible')
+            
+            botaoAdicionar.classList.replace('visible', 'invisible')
 
+        }
 
+        function alterar(id){
+            //ao clicar
+            
+            
+            
+            estoque[id] = {
+                nome: nomeInput.value,
+                valor: valorInput.value
+            }
+            
+            reset()
+            atualizaTabela(estoque)
         }
     </script>
     
